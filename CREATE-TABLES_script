@@ -1,0 +1,50 @@
+CREATE TABLE SHR
+(
+	SHR_ID		CHAR(5)		NOT NULL,
+	SHR_Rank		VARCHAR(5),
+	SHR_Name		VARCHAR(20)	NOT NULL,
+	Phone_No		VARCHAR(15),
+	Email			VARCHAR(50),
+        PRIMARY KEY (SHR_ID) 
+);
+
+CREATE TABLE NVG
+(
+	Serial_No		VARCHAR(10)	NOT NULL,
+	Nomenclature	VARCHAR(30),
+	Last_Purge_Date	DATE,
+        PRIMARY KEY (Serial_No) 
+);
+
+CREATE TABLE SIGNED_BY
+(
+	SHR_ID		CHAR(5)		NOT NULL,
+	Serial_No		VARCHAR(10)	NOT NULL,
+        PRIMARY KEY (Serial_No),
+        FOREIGN KEY (Serial_No) REFERENCES NVG(Serial_No),
+        FOREIGN KEY (SHR_ID) REFERENCES SHR(SHR_ID) 
+);
+
+CREATE TABLE SERVICE_ORDERS
+(
+	SO_No		BIGINT		NOT NULL CHECK ( SO_No > 0 ),
+	Serial_No		VARCHAR(10)	NOT NULL,
+	Active			CHAR(1)		NOT NULL CHECK ( Active IN ( ‘Y’ , ’N’ )),
+	Start_Date		DATE,
+	Est_End_Date	DATE,
+        PRIMARY KEY (SO_No),
+        FOREIGN KEY (Serial_No) REFERENCES NVG(Serial_No) 
+);
+
+
+CREATE TABLE REPAIR_ORDERS
+(
+	RO_No		BIGINT		NOT NULL CHECK ( RO_No > 0 ),
+	Serial_No		VARCHAR(10)	NOT NULL,
+	Malfunction		VARCHAR(1000),
+	Active			CHAR(1)		NOT NULL CHECK ( Active IN ( ‘Y’ , ’N’ )),
+	Start_Date		DATE,
+	Est_End_Date	DATE,
+        PRIMARY KEY (RO_No),
+        FOREIGN KEY (Serial_No) REFERENCES NVG(Serial_No) 
+);
